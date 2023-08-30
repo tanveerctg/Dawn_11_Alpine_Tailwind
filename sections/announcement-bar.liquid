@@ -177,12 +177,14 @@
               <h2 class="visually-hidden" id="AnnouncementLanguageMobileLabelNoScript">
                 {{ 'localization.language_label' | t }}
               </h2>
+             
               <select
                 class="localization-selector link"
                 name="locale_code"
                 aria-labelledby="AnnouncementLanguageMobileLabelNoScript"
               >
                 {%- for language in localization.available_languages -%}
+                   {{ language|json }}
                   <option
                     value="{{ language.iso_code }}"
                     lang="{{ language.iso_code }}"
