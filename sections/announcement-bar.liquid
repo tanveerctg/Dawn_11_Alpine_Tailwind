@@ -141,6 +141,7 @@
                 name="country_code"
                 aria-labelledby="AnnouncementCountryMobileLabelNoScript"
               >
+                {{ country|json }}
                 {%- for country in localization.available_countries -%}
                   <option
                     value="{{ country.iso_code }}"
