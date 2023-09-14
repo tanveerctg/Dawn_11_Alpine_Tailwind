@@ -2,7 +2,9 @@
   {% case block.type %}
     {% when 'announcement' %}
     {% if block.settings.text !=blank %}
-      {{ block.settings.text }}
+      {% if block.settings.link !=blank %}<a href="https://www.w3schools.com">{% endif %}
+          <p>{{ block.settings.text }}</p>
+      {% if block.settings.link !=blank %}</a>{% endif %}
     {% endif %}
     {% when 'cookie' %}
     This is a cookie
