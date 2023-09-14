@@ -5,7 +5,7 @@
       {% if block.settings.link != blank %}
         <a href={{ block.settings.link }} target="_blank">
         {% endif %}
-        <p class="text-center">{{ block.settings.text }}</p>
+        <p class="text-center color-{{ section.settings.color_scheme }}">{{ block.settings.text }}</p>
         {% if block.settings.link != blank %}
         </a>
       {% endif %}
