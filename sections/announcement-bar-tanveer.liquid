@@ -1,8 +1,14 @@
-{% for block in blocks %}
+{% for block in section.blocks %}
   {% case block.type %}
     {% when 'announcement' %}
-    {% if section.settings.text %}
-      {{ section.settings.text }}
+    {% if block.settings.text != blank %}
+      {% if block.settings.link != blank %}
+        <a href={{ block.settings.link }} target="_blank">
+        {% endif %}
+        <p class="text-center">{{ block.settings.text }}</p>
+        {% if block.settings.link != blank %}
+        </a>
+      {% endif %}
     {% endif %}
     {% when 'cookie' %}
     This is a cookie
@@ -10,6 +16,7 @@
     This is not a cake nor a cookie
   {% endcase %}
 {% endfor %}
+
 
 {% schema %}
   {
