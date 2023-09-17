@@ -1,17 +1,115 @@
-{% for block in section.blocks %}
-  {% case block.type %}
-    {% when 'announcement' %}
-    {% if block.settings.text !=blank %}
-      {% if block.settings.link !=blank %}<a href={{ block.settings.link }} target="_blank">{% endif %}
-          <p class="text-center">{{ block.settings.text }}</p>
-      {% if block.settings.link !=blank %}</a>{% endif %}
-    {% endif %}
-    {% when 'cookie' %}
-    This is a cookie
+{% if section.settings.enable_country_selector %}
+  <h1>Enable</h1>
+{% else %}
+  <h1>Not Enabled</h1>
+{% endif %}
+{% if section.settings.enable_country_selector %}
+  {% assign grid = 'grid grid-cols-3 gap-2 m-0' %}
+  {% assign slider = 'col-span-2' %}
+{% else %}
+  {% assign grid = 'grid grid-cols-1 m-0' %}
+  {% assign slider = 'col-span-1' %}
+{% endif %}
+
+<div class="max-w-7xl mx-auto {{grid}} place-items-center">
+
+  <h1>as</h1>
+  {% if section.blocks.size > 1 %}
+    <div
+      style="display:flex;justify-content:space-between;"
+      class="{{slider}}"
+      x-data="{    
+                                                                                                                                                                                                                                                                                              data:[],
+                                                                                                                                                                                                                                                                                              iterate:{{section.settings.auto_rotate}},
+                                                                                                                                                                                                                                                                                              init() {                                           
+                                                                                                                                                                                                                                                                                                  {% for block in section.blocks %}
+                                                                                                                                                                                                                                                                                                    this.data.push('{{block.settings.text}}');
+                                                                                                                                                                                                                                                                                                  {% endfor %}
+                                                                                                                                                                                                                                                                                                  console.log({data:this.data})
+                                                                                                                                                                                                                                                                                                  if(!this.iterate) return
+                                                                                                                                                                                                                                                                                                  const interval=setInterval(()=>{
+                                                                                                                                                                                                                                                                                                      console.log({g:this.data})
+                                                                                                                                                                                                                                                                                                      this.handleNext()
+                                                                                                                                                                                                                                                                                                  },{{ section.settings.change_slides_speed }}*1000)
+                                                                                                                                                                                                                                                                                              },
+                                                                                                                                                                                                                                                                                              current:0,
+                                                                                                                                                                                                                                                                                              handleBack(){
+                                                                                                                                                                                                                                                                                              if(this.current===0){
+                                                                                                                                                                                                                                                                                                  return this.current=this.data.length-1;
+                                                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                                                              this.current--;
+                                                                                                                                                                                                                                                                                              },
+                                                                                                                                                                                                                                                                                              handleNext(){
+                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                              if(this.data.length-1===this.current){
+                                                                                                                                                                                                                                                                                                  return this.current=0;
+                                                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                              this.current++;
+                                                                                                                                                                                                                                                                                              },
+                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                          }">
+
+      <button @click="handleBack" class="">Back</button>
+      <span x-text="data[current]" class="text-center flex-1 flex items-center"></span>
+      <button @click="handleNext" class="">Next</button>
+
+    </div>
   {% else %}
-    This is not a cake nor a cookie
-  {% endcase %}
-{% endfor %}
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'announcement' %}
+        {% if block.settings.text != blank %}
+          {% if block.settings.link != blank %}
+            <a href={{ block.settings.link }} target="_blank">
+            {% endif %}
+            <p class="text-center text-lg">{{ block.settings.text }}</p>
+            {% if block.settings.link != blank %}
+            </a>
+          {% endif %}
+        {% endif %}
+      {% endcase %}
+    {% endfor %}
+  {% endif %}
+
+
+
+  {% if section.settings.enable_country_selector %}
+    <div class="justify-self-end">
+      <noscript class="small-hide medium-hide">
+        {%- form 'localization', id: 'AnnouncementCountryMobileFormNoScript', class: 'localization-form' -%}
+          <div class="localization-form__select text-lg">
+            <h2 class="visually-hidden" id="AnnouncementCountryMobileLabelNoScript">
+              {{ 'localization.country_label' | t }}
+            </h2>
+            <select
+              class="localization-selector link text-lg"
+              name="country_code"
+              aria-labelledby="AnnouncementCountryMobileLabelNoScript">
+              {%- for country in localization.available_countries -%}
+                <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                  {{ country.name }} ({{ country.currency.iso_code }}
+                  {{ country.currency.symbol }})
+                </option>
+              {%- endfor -%}
+            </select>
+            {% render 'icon-caret' %}
+          </div>
+          <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
+        {%- endform -%}
+      </noscript>
+
+      <localization-form class="small-hide medium-hide no-js-hidden">
+        {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
+          <div>
+            <h2 class="visually-hidden" id="AnnouncementCountryLabel">{{ 'localization.country_label' | t }}</h2>
+            {%- render 'country-localization', localPosition: 'AnnouncementCountry' -%}
+          </div>
+        {%- endform -%}
+      </localization-form>
+    </div>
+  {% endif %}
+</div>
 
 
 {% schema %}
@@ -52,7 +150,7 @@
         "type": "checkbox",
         "id": "auto_rotate",
         "label": "t:sections.announcement-bar.settings.auto_rotate.label",
-        "default": false
+        "default": true
       }, {
         "type": "range",
         "id": "change_slides_speed",
