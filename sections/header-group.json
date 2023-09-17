@@ -2,6 +2,30 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "7fc0a365-55bd-402d-b823-c840543fcaf7": {
+      "type": "announcement-bar-tanveer",
+      "blocks": {
+        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "show_line_separator": true,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
@@ -59,35 +83,11 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
-    },
-    "7fc0a365-55bd-402d-b823-c840543fcaf7": {
-      "type": "announcement-bar-tanveer",
-      "blocks": {
-        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      }
     }
   },
   "order": [
+    "7fc0a365-55bd-402d-b823-c840543fcaf7",
     "announcement-bar",
-    "header",
-    "7fc0a365-55bd-402d-b823-c840543fcaf7"
+    "header"
   ]
 }
