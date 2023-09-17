@@ -11,10 +11,18 @@
             "text": "Welcome to our store",
             "link": ""
           }
+        },
+        "b785366b-96ef-47f5-818b-22fc7463cba1": {
+          "type": "announcement",
+          "settings": {
+            "text": "hi",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1"
+        "sections--15655615037579__7fc0a365-55bd-402d-b823-c840543fcaf7-announcement-1",
+        "b785366b-96ef-47f5-818b-22fc7463cba1"
       ],
       "settings": {
         "color_scheme": "",
