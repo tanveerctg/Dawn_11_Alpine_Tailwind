@@ -2,64 +2,6 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": ""
-          }
-        },
-        "087516b9-82c4-4ff7-8478-3ab4b9d6ab20": {
-          "type": "announcement",
-          "settings": {
-            "text": "Welcome to our store",
-            "link": ""
-          }
-        },
-        "2926b713-9886-4097-84ce-b65ce82aee40": {
-          "type": "announcement",
-          "settings": {
-            "text": "asd",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement-bar-0",
-        "087516b9-82c4-4ff7-8478-3ab4b9d6ab20",
-        "2926b713-9886-4097-84ce-b65ce82aee40"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "show_line_separator": true,
-        "show_social": true,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": true,
-        "enable_language_selector": true
-      }
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "color_scheme": "background-1",
-        "menu_color_scheme": "",
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
     "7fc0a365-55bd-402d-b823-c840543fcaf7": {
       "type": "announcement-bar-tanveer",
       "blocks": {
@@ -91,11 +33,70 @@
         "enable_country_selector": true,
         "enable_language_selector": true
       }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        },
+        "087516b9-82c4-4ff7-8478-3ab4b9d6ab20": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        },
+        "2926b713-9886-4097-84ce-b65ce82aee40": {
+          "type": "announcement",
+          "settings": {
+            "text": "asd",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0",
+        "087516b9-82c4-4ff7-8478-3ab4b9d6ab20",
+        "2926b713-9886-4097-84ce-b65ce82aee40"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_line_separator": true,
+        "show_social": true,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": true,
+        "enable_language_selector": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "background-1",
+        "menu_color_scheme": "",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
     }
   },
   "order": [
+    "7fc0a365-55bd-402d-b823-c840543fcaf7",
     "announcement-bar",
-    "header",
-    "7fc0a365-55bd-402d-b823-c840543fcaf7"
+    "header"
   ]
 }
