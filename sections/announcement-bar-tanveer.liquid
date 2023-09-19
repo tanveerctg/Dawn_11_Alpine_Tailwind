@@ -15,44 +15,44 @@
 
 
   {% if section.blocks.size > 1 %}
-    <div
-      style="display:flex;justify-content:space-between;"
-      class="{{slider}}"
-      x-data="{    
-                                                                                                                                                                                                                                                                                                                      data:[],
-                                                                                                                                                                                                                                                                                                                      iterate:{{section.settings.auto_rotate}},
-                                                                                                                                                                                                                                                                                                                      init() {                                           
-                                                                                                                                                                                                                                                                                                                          {% for block in section.blocks %}
-                                                                                                                                                                                                                                                                                                                            this.data.push('{{block.settings.text}}');
-                                                                                                                                                                                                                                                                                                                          {% endfor %}
-                                                                                                                                                                                                                                                                                                                          console.log({data:this.data})
-                                                                                                                                                                                                                                                                                                                          if(!this.iterate) return
-                                                                                                                                                                                                                                                                                                                          const interval=setInterval(()=>{
-                                                                                                                                                                                                                                                                                                                              console.log({g:this.data})
-                                                                                                                                                                                                                                                                                                                              this.handleNext()
-                                                                                                                                                                                                                                                                                                                          },{{ section.settings.change_slides_speed }}*1000)
-                                                                                                                                                                                                                                                                                                                      },
-                                                                                                                                                                                                                                                                                                                      current:0,
-                                                                                                                                                                                                                                                                                                                      handleBack(){
-                                                                                                                                                                                                                                                                                                                      if(this.current===0){
-                                                                                                                                                                                                                                                                                                                          return this.current=this.data.length-1;
-                                                                                                                                                                                                                                                                                                                      }
-                                                                                                                                                                                                                                                                                                                      this.current--;
-                                                                                                                                                                                                                                                                                                                      },
-                                                                                                                                                                                                                                                                                                                      handleNext(){
-                                                                                                                                                                                                                                                                                                                  
-                                                                                                                                                                                                                                                                                                                      if(this.data.length-1===this.current){
-                                                                                                                                                                                                                                                                                                                          return this.current=0;
-                                                                                                                                                                                                                                                                                                                      }
-                                                                                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                                                                                                      this.current++;
-                                                                                                                                                                                                                                                                                                                      },
-                                                                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                                                  }">
+    <div {% comment %}style="display:flex;justify-content:space-between;"{% endcomment %}class="{{slider}} flex justify-between w-full"x-data="{    
+        data:[],
+        iterate:{{section.settings.auto_rotate}},
+        init() {                                           
+            {% for block in section.blocks %}
+              this.data.push('{{block.settings.text}}');
+            {% endfor %}
+            console.log({data:this.data})
+            if(!this.iterate) return
+            const interval=setInterval(()=>{
+                console.log({g:this.data})
+                this.handleNext()
+            },{{ section.settings.change_slides_speed }}*1000)
+        },
+        current:0,
+        handleBack(){
+        if(this.current===0){
+            return this.current=this.data.length-1;
+        }
+        this.current--;
+        },
+        handleNext(){
+        if(this.data.length-1===this.current){
+            return this.current=0;
+        }
+        this.current++;
+        }               
+    }">
 
-      <button @click="handleBack" class="">Back</button>
-      <span x-text="data[current]" class="text-center flex-1 flex items-center"></span>
-      <button @click="handleNext" class="">Next</button>
+      <div @click="handleBack" class="cursor-pointer">
+        {% render 'left-arrow' %}                                                                                                                                                                                                                                                                                                                                                                                                                                   
+      </div>                                                                                                                                                                                                                                                                                                                                                                                                                      
+     
+      <span x-text="data[current]" class="flex-1 text-center"></span>
+      
+      <div @click="handleNext" class="cursor-pointer">
+        {% render 'right-arrow' %}
+      </div>
 
     </div>
   {% else %}
@@ -76,40 +76,101 @@
 
   {% if section.settings.enable_country_selector %}
     <div class="justify-self-end">
-      <noscript class="small-hide medium-hide">
-        {%- form 'localization', id: 'AnnouncementCountryMobileFormNoScript', class: 'localization-form' -%}
-          <div class="localization-form__select text-lg">
-            <h2 class="visually-hidden" id="AnnouncementCountryMobileLabelNoScript">
-              {{ 'localization.country_label' | t }}
-            </h2>
-            <select
-              class="localization-selector link text-lg"
-              name="country_code"
-              aria-labelledby="AnnouncementCountryMobileLabelNoScript">
-              {%- for country in localization.available_countries -%}
-                <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %}selected{% endif %}>
-                  {{ country.name }} ({{ country.currency.iso_code }}
-                  {{ country.currency.symbol }})
-                </option>
-              {%- endfor -%}
-            </select>
-            {% render 'icon-caret' %}
-          </div>
-          <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
-        {%- endform -%}
-      </noscript>
+      <div class="flex justify-center">
+        <div x-data="{
+                                                                                                                                                                                                            open: false,
+                                                                                                                                                                                                            toggle() {
+                                                                                                                                                                                                                if (this.open) {
+                                                                                                                                                                                                                    return this.close()
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                  
+                                                                                                                                                                                                                this.$refs.button.focus()
+                                                                                                                                                                                                  
+                                                                                                                                                                                                                this.open = true
+                                                                                                                                                                                                            },
+                                                                                                                                                                                                            handleClick(value){
+                                                                                                                                                                                                              console.log(value,$refs.country_value,$refs.country_submit_btn);
+                                                                                                                                                                                                              $refs.country_value.value=value
+                                                                                                                                                                                                
+                                                                                                                                                                                                              $refs.country_submit_btn.click()
+                                                                                                                                                                                                              console.log('clicked')
+                                                                                                                                                                                                            },
+                                                                                                                                                                                                            close(focusAfter) {
+                                                                                                                                                                                                                if (! this.open) return
+                                                                                                                                                                                                  
+                                                                                                                                                                                                                this.open = false
+                                                                                                                                                                                                  
+                                                                                                                                                                                                                focusAfter && focusAfter.focus()
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                          }"
+          x-on:keydown.escape.prevent.stop="close($refs.button)"
+          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+          x-id="['dropdown-button']"
+          class="relative">
+          <!-- Button -->
+          <button
+            x-ref="button"
+            x-on:click="toggle()"
+            :aria-expanded="open"
+            :aria-controls="$id('dropdown-button')"
+            type="button"
+            class="flex items-center gap-2 bg-white px-5 py-2.5 rounded-md shadow">
+            <span>
+              {{- localization.country.currency.iso_code }}
+              {{ localization.country.currency.symbol }} | {{ localization.country.name -}}
+            </span>
 
-      <localization-form class="small-hide medium-hide no-js-hidden">
-        {%- form 'localization', id: 'AnnouncementCountryForm', class: 'localization-form' -%}
-          <div>
-            <h2 class="visually-hidden" id="AnnouncementCountryLabel">{{ 'localization.country_label' | t }}</h2>
-            {%- render 'country-localization', localPosition: 'AnnouncementCountry' -%}
+            <!-- Heroicon: chevron-down -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-gray-400"
+              viewBox="0 0 20 20"
+              fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </button>
+          <!-- Panel -->
+          <div
+            x-ref="panel"
+            x-show="open"
+            x-transition.origin.top.left
+            x-on:click.outside="close($refs.button)"
+            :id="$id('dropdown-button')"
+            style="display: none;z-index:1000;"
+            class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md z-30">
+            {% form 'localization' %}
+              {%- for country in localization.available_countries -%}
+
+                <a
+                  @click="handleClick('{{country.iso_code}}')"
+                  class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %}"
+                  href="#"
+                  {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}data-value="{{ country.iso_code }}">
+                  <span class="localization-form__currency">
+                    {{- country.currency.iso_code }}
+                    {{ country.currency.symbol }} |</span>
+                  {{ country.name }}
+                </a>
+
+              {%- endfor -%}
+              <input
+                x-ref="country_value"
+                type="hidden"
+                name="country_code"
+                value="{{ localization.country.iso_code }}" />
+              <input type="submit" x-ref="country_submit_btn" />
+            {%- endform -%}
+       
           </div>
-        {%- endform -%}
-      </localization-form>
+        </div>
+      </div>
     </div>
   {% endif %}
 </div>
+
 
 
 {% schema %}

@@ -114,7 +114,9 @@
         <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
     {%- endif -%}
+
     <div class="localization-wrapper">
+
       {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
         <noscript class="small-hide medium-hide">
           {%- form 'localization', id: 'AnnouncementCountryMobileFormNoScript', class: 'localization-form' -%}
