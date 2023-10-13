@@ -6,48 +6,42 @@ Usage:
 {% endcomment %}
 
 {% style  %} 
+ .menu-container {
+        display: flex;
+      }
+      .menu-container > div {
+        padding: 0 10px;
+        cursor: pointer;
+      }
 
-  .menu-container {
-          display: flex;
-        }
-        .menu-container > div {
-          padding: 0 10px;
-          cursor: pointer;
-        }
-  
-        .menu-item-with-child {
-          position: relative;
-        }
-        .child-item {
-          display: none;
-          position: absolute;
-          width: 110%;
-          left: 50%;
-          transform: translateX(-50%);
-          border: 1px solid #cccccc;
-          border-radius: 5px;
-        }
-        .child-item p {
-          padding: 6px 10px;
-          border-bottom: 1px solid #ececec;
-        }
-        .menu-item-with-child:hover .child-item {
-          display: block;
-        }
-        .child-item:hover{
-          display:block;
-        }
-        .menu-item-with-child:hover .nav-item-parent svg {
-          rotate: 180deg;
-        }
-        .nav-item-parent {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
+      .menu-item-with-child {
+        position: relative;
+      }
+      .child-item {
+        position: absolute;
+        width: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+      }
+
+      .child-item p {
+        padding: 6px 10px;
+        border-bottom: 1px solid #ececec;
+      }
+
+      .arrow.active {
+        rotate: 180deg;
+      }
+      .nav-item-parent {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
    {% endstyle %}
 
-<div class="menu-container">
+{% comment %} <div class="menu-container">
         <div>
           <p>Home</p>
         </div>
@@ -72,23 +66,29 @@ Usage:
         <div>
           <p>Designers</p>
         </div>
-      </div>
+      </div> {% endcomment %}
 
 
-  {% comment %} <div class="menu-container">
+  <div class="menu-container">
         {%- for link in section.settings.menu.links -%}
           
             {%- if link.links != blank -%}
-              <div class="menu-item-with-child">
-                <div class="nav-item-parent">
+              <div   class="menu-item-with-child"
+                      x-data="{
+                      openMenu: false,
+                      }"
+              >
+                <div class="nav-item-parent" @click="openMenu = !openMenu">
                   <p>{{- link.title | escape -}}</p>
+      
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-4 h-4 ml-1"
+                    :class="{ 'active': openMenu }"
+                    class="w-4 h-4 ml-1 arrow"
                   >
                     <path
                       stroke-linecap="round"
@@ -97,19 +97,20 @@ Usage:
                     />
                   </svg>
                 </div>
-                <div class="child-item">
+
+                <div class="child-item" x-show="openMenu">
                   {%- for childlink in link.links -%}
                       {%- if childlink.links == blank -%}
-                      <p {% if link.current %}  class="active-nav-child"{% endif %}>
-                        <a
-                       
-                          href="{{ childlink.url }}"
+                        <p {% if link.current %}  class="active-nav-child"{% endif %}>
+                          <a
                         
-                        >
-                              {{ childlink.title | escape }}
-                              
-                              </a>  
-                              </p>      
+                            href="{{ childlink.url }}"
+                          
+                          >
+                                {{ childlink.title | escape }}
+                                
+                                </a>  
+                        </p>      
                       {% endif %}
                   {%- endfor -%}
                 </div>
@@ -126,6 +127,6 @@ Usage:
             {%- endif -%}
         
         {%- endfor -%}
-  </div> {% endcomment %}
+  </div> 
 
 
