@@ -16,40 +16,40 @@
 
   {% if section.blocks.size > 1 %}
     <div {% comment %}style="display:flex;justify-content:space-between;"{% endcomment %}class="{{slider}} flex justify-between w-full"x-data="{    
-        data:[],
-        iterate:{{section.settings.auto_rotate}},
-        init() {                                           
-            {% for block in section.blocks %}
-              this.data.push('{{block.settings.text}}');
-            {% endfor %}
-            console.log({data:this.data})
-            if(!this.iterate) return
-            const interval=setInterval(()=>{
-                console.log({g:this.data})
-                this.handleNext()
-            },{{ section.settings.change_slides_speed }}*1000)
-        },
-        current:0,
-        handleBack(){
-        if(this.current===0){
-            return this.current=this.data.length-1;
-        }
-        this.current--;
-        },
-        handleNext(){
-        if(this.data.length-1===this.current){
-            return this.current=0;
-        }
-        this.current++;
-        }               
-    }">
+                        data:[],
+                        iterate:{{section.settings.auto_rotate}},
+                        init() {                                           
+                            {% for block in section.blocks %}
+                              this.data.push('{{block.settings.text}}');
+                            {% endfor %}
+                            console.log({data:this.data})
+                            if(!this.iterate) return
+                            const interval=setInterval(()=>{
+                                console.log({g:this.data})
+                                this.handleNext()
+                            },{{ section.settings.change_slides_speed }}*1000)
+                        },
+                        current:0,
+                        handleBack(){
+                        if(this.current===0){
+                            return this.current=this.data.length-1;
+                        }
+                        this.current--;
+                        },
+                        handleNext(){
+                        if(this.data.length-1===this.current){
+                            return this.current=0;
+                        }
+                        this.current++;
+                        }               
+                    }">
 
       <div @click="handleBack" class="cursor-pointer">
-        {% render 'left-arrow' %}                                                                                                                                                                                                                                                                                                                                                                                                                                   
-      </div>                                                                                                                                                                                                                                                                                                                                                                                                                      
-     
+        {% render 'left-arrow' %}
+      </div>
+
       <span x-text="data[current]" class="flex-1 text-center"></span>
-      
+
       <div @click="handleNext" class="cursor-pointer">
         {% render 'right-arrow' %}
       </div>
@@ -78,31 +78,31 @@
     <div class="justify-self-end">
       <div class="flex justify-center">
         <div x-data="{
-                                                                                                                                                                                                            open: false,
-                                                                                                                                                                                                            toggle() {
-                                                                                                                                                                                                                if (this.open) {
-                                                                                                                                                                                                                    return this.close()
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                  
-                                                                                                                                                                                                                this.$refs.button.focus()
-                                                                                                                                                                                                  
-                                                                                                                                                                                                                this.open = true
-                                                                                                                                                                                                            },
-                                                                                                                                                                                                            handleClick(value){
-                                                                                                                                                                                                              console.log(value,$refs.country_value,$refs.country_submit_btn);
-                                                                                                                                                                                                              $refs.country_value.value=value
-                                                                                                                                                                                                
-                                                                                                                                                                                                              $refs.country_submit_btn.click()
-                                                                                                                                                                                                              console.log('clicked')
-                                                                                                                                                                                                            },
-                                                                                                                                                                                                            close(focusAfter) {
-                                                                                                                                                                                                                if (! this.open) return
-                                                                                                                                                                                                  
-                                                                                                                                                                                                                this.open = false
-                                                                                                                                                                                                  
-                                                                                                                                                                                                                focusAfter && focusAfter.focus()
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                          }"
+                        open: false,
+                        toggle() {
+                            if (this.open) {
+                                return this.close()
+                            }
+              
+                            this.$refs.button.focus()
+              
+                            this.open = true
+                        },
+                        handleClick(value){
+                          console.log(value,$refs.country_value,$refs.country_submit_btn);
+                          $refs.country_value.value=value
+            
+                          $refs.country_submit_btn.click()
+                          console.log('clicked')
+                        },
+                        close(focusAfter) {
+                            if (! this.open) return
+              
+                            this.open = false
+              
+                            focusAfter && focusAfter.focus()
+                        }
+                      }"
           x-on:keydown.escape.prevent.stop="close($refs.button)"
           x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
           x-id="['dropdown-button']"
@@ -163,7 +163,7 @@
                 value="{{ localization.country.iso_code }}" />
               <input type="submit" x-ref="country_submit_btn" />
             {%- endform -%}
-       
+
           </div>
         </div>
       </div>
