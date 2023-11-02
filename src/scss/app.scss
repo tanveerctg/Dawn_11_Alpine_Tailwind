@@ -3,3 +3,33 @@
 @tailwind utilities;
 
 
+// Helpers
+.page-width{
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+// buttons
+.shopify-payment-button{
+    button{
+        @apply bg-black text-white rounded-sm;
+      
+    }
+    .shopify-payment-button__more-options{
+        @apply mt-2
+    }
+}
+
+.button__primary{
+    @apply bg-black text-white my-2 px-6 rounded-sm flex items-center;
+
+}
+
+// product form
+.product-form__input{
+    // select label after checked radio input 
+    input[type='radio']:checked + label{
+        @apply bg-black text-white;
+    }
+}
