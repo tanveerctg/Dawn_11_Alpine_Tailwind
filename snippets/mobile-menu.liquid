@@ -1,6 +1,7 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div
   class="fixed inset-0 overflow-hidden z-20"
+  x-cloak
   x-data="{ showMenu: false }"
   x-show="showMenu"
   @toggle-menu.window="showMenu = !showMenu"

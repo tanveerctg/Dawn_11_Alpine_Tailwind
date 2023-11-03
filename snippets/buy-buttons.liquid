@@ -31,7 +31,7 @@
     >
       <div class="product-form__error-message-wrapper" role="alert" hidden>
         <svg
-          aria-hidden="true"
+          aria-hidden="false"
           focusable="false"
           class="icon icon-error"
           viewBox="0 0 13 13"
@@ -47,9 +47,10 @@
       <div 
           x-data="{
           qty:1,
+          loading:false,
           add_to_cart(e){
               e.preventDefault();
-       
+              this.loading=true;
               let formData = {
                 'items': [{
                  'id':{{ product.selected_or_first_available_variant.id}},
@@ -64,14 +65,20 @@
                  body: JSON.stringify(formData)
                })
                .then(response => {
-                console.log({response})
                  return response.json();
                })
                .then(res=>{
-                console.log({res})
+                 {% comment %} if(res.status ===422){                  
+                  console.log('error',{res})
+                  return
+                } {% endcomment %}
+                $dispatch('toggle-cart')
+            
+                this.loading=false;
                })
                .catch((error) => {
                  console.error('Error:', error);
+                 this.loading=false;
                });
             }
           }"
@@ -87,13 +94,12 @@
           data-type: 'add-to-cart-form',
           x-ref:"product_form"
         -%}
-          <input type="text" name="quantity" min="1" value="1" x-model="qty">
+          
           <input
             type="hidden"
             name="id"
             value="{{ product.selected_or_first_available_variant.id }}"
             disabled
-            class="product-variant-id"
             x-ref="variantId"
           >
   
@@ -116,25 +122,17 @@
               {% if product.selected_or_first_available_variant.available == false or quantity_rule_soldout %}
                 disabled
               {% endif %}
+              class="bg-black w-full text-center text-white grid place-items-center p-2 mt-2"
             >
-              <span>
+              <span x-show="!loading">
                 {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
                   {{ 'products.product.sold_out' | t }}
                 {%- else -%}
                   {{ 'products.product.add_to_cart' | t }}
                 {%- endif -%}
               </span>
-              <div class="loading-overlay__spinner hidden">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  class="spinner"
-                  viewBox="0 0 66 66"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                </svg>
-              </div>
+              <div x-show="loading" class="text-center text-cyan-500">Loading...</div>
+       
             </button>
             {%- if show_dynamic_checkout -%}
               {{ form | payment_button }}

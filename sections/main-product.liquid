@@ -51,23 +51,26 @@
           {%- when '@app' -%}
             {% render block %}
           {%- when 'text' -%}
-            <p
+            {% comment %} <p
               class="product__text inline-richtext{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}"
               {{ block.shopify_attributes }}
             >
               {{- block.settings.text -}}
-            </p>
+            </p> {% endcomment %}
           {%- when 'title' -%}
             <div class="product__title" {{ block.shopify_attributes }}>
-              <h1>{{ product.title | escape }}</h1>
+              
               <a href="{{ product.url }}" class="product__title">
-                <h2 class="h1">
+                <h2 class="text-3xl">
                   {{ product.title | escape }}
                 </h2>
               </a>
             </div>
           {%- when 'price' -%}
-            <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+            <p class="text-lg">
+              {{product.price| money}}
+            </p>
+            {% comment %} <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
               {%- render 'price',
                 product: product,
                 use_variant: true,
@@ -94,7 +97,7 @@
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 {{ form | payment_terms }}
               {%- endform -%}
-            </div>
+            </div> {% endcomment %}
           {%- when 'inventory' -%}
             <p
               class="product__inventory no-js-hidden{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
@@ -181,7 +184,7 @@
           {%- when 'quantity_selector' -%}
             <div
               id="Quantity-Form-{{ section.id }}"
-              class="product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
+              class="mt-2 product-form__input product-form__quantity{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} product-form__quantity-top{% endif %}"
               {{ block.shopify_attributes }}
             >
               {% comment %} TODO: enable theme-check once `item_count_for_variant` is accepted as valid filter {% endcomment %}
@@ -208,10 +211,10 @@
                   <span>({{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}})</span>
                 </span>
               </label>
-              <div class="price-per-item__container">
+              <div class="price-per-item__container mt-2">
                 {% comment %} <quantity-input class="quantity" data-url="{{ product.url }}" data-section="{{ section.id }}"> {% endcomment %}
                   <div 
-                    class="flex" 
+                    class="flex gap:1 border-2 border-black" 
                     x-data="{
                       qty:{{ product.selected_or_first_available_variant.quantity_rule.min }},
                       updateQuantity(q){
@@ -227,7 +230,7 @@
                       })" {% endcomment %}
                     x-init="$watch('qty', value =>  $dispatch('set-quantity',{ qty: value }))" 
                   >
-                    <button class="flex-auto" name="minus" type="button"   x-on:click="updateQuantity(-1)" > 
+                    <button name="minus" type="button" x-on:click="updateQuantity(-1)" class="bg-black p-2"> 
                       <span class="sr-only">
                         {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
                       </span>
@@ -235,12 +238,12 @@
                     </button>
                 
                     <input
-                      class="quantity__input flex-1"
+                      class="quantity__input flex-1 text-center outline-none"
                       type="number"
                       name="quantity"
                       id="Quantity-{{ section.id }}"
                       x-model="qty"
-                      data-cart-quantity="{{ cart_qty }}"
+                      data-cart-quantity="{{ cart_qty }}"s
                       data-min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                       min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                       {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
@@ -251,7 +254,7 @@
                       value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
                       form="{{ product_form_id }}"
                     />
-                    <button class="flex-auto" name="plus" type="button" x-on:click="updateQuantity(1)">
+                    <button name="plus" type="button" x-on:click="updateQuantity(1)" class="bg-black p-2">
                       <span class="sr-only">
                         {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
                       </span>
@@ -413,8 +416,8 @@
               share_link: share_url
             %}
 
-          {%- when 'variant_picker' -%}
-            {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+            {%- when 'variant_picker' -%}
+              {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
           {%- when 'buy_buttons' -%}
             {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true -%}
           {%- when 'rating' -%}
