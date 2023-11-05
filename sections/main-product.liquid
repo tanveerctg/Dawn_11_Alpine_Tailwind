@@ -23,23 +23,32 @@
   <div class="grid grid-cols-3 gap-4">
     <div class="col-span-2 grid grid-cols-2 self-start">
       {% for media in product.media %}
+ 
+        
         {% case media.media_type %}
         {% when 'image' %}
-            {{ media.preview_image.src | image_url: width:400 | image_tag }}
+          <div class="{% if forloop.first == true %}col-span-2{% endif %}">
+           {% if forloop.first == true %}
+            {% assign width = 800 %}
+          {%else%}
+            {% assign width = 400 %}
+          {% endif %} 
+          {{ media.preview_image.src | image_url: width:width | image_tag }}
+          </div>
         {% when 'external_video' %}
-          <div class="product-single__media">
+          <div class="product-single__media {% if forloop.first == true %}col-span-2{% endif %}">
             {{ media | external_video_tag }}
           </div>
         {% when 'video' %}
-          <div class="product-single__video grid place-items-center">
+          <div class="product-single__video grid place-items-center {% if forloop.first == true %}col-span-2{% endif %}">
             {{ media | video_tag: controls: true,class:"w-full"  }}
           </div>
         {% when 'model' %}
-          <div class="product-single__media">
+          <div class="product-single__media {% if forloop.first == true %}col-span-2{% endif %}">
             {{ media | model_viewer_tag }}
           </div>
         {% else %}
-          <div class="product-single__media">
+          <div class="product-single__media {% if forloop.first == true %}col-span-2{% endif %}">
             {{ media | media_tag }}
           </div>
       {% endcase %}
@@ -234,7 +243,7 @@
                       <span class="sr-only">
                         {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
                       </span>
-                      {% render 'icon-minus' %}
+                      {% render 'icon-minus' ,class:"w-6 h-6"%}
                     </button>
                 
                     <input
@@ -258,7 +267,7 @@
                       <span class="sr-only">
                         {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
                       </span>
-                      {% render 'icon-plus' %}
+                      {% render 'icon-plus' ,class:"w-6 h-6"%}
                     </button>
 
                   </div>

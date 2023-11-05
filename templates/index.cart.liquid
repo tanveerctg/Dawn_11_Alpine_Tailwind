@@ -1,0 +1,67 @@
+
+{% layout none %}
+<form action="{{ routes.cart_url }}" method="post" class="h-full flex flex-col gap-2">
+        <div class="px-4 sm:px-6">
+          <h2 class="text-base font-semibold leading-6 text-gray-900" id="slide-over-title">Your Cart: {{cart.item_count}}</h2>
+        </div>
+        <div class="relative mt-6 flex-1 px-4 sm:px-6 flex flex-col justify-between">
+          <div>
+            {% assign total_savings = 0 %}
+            {% for item in cart.items %} 
+              <div class="flex items-start py-3 {% if forloop.last == true %}{% else %}border-b-2 border-neutral-300{% endif %}">
+                 {{ item.image.src | image_url: width: 80 | image_tag, class:'shadow-sm self-start' }}    
+                 <div class="ml-2 grid gap-2">
+                   <p class="capitalize">
+                     {{item.title}}
+                   </p>
+                   
+                   <div>
+                     {% if item.product.compare_at_price > item.product.price %}
+                       {{item.product.price|money_with_currency}} &nbsp;
+                       {% assign item_saving = item.product.compare_at_price | minus: item.product.price%}
+                       {% assign total_savings = total_savings | plus: item_saving | times: item.quantity%}
+                       <s>
+                         {{ item.product.compare_at_price|money_with_currency}}
+                       </s>
+                       {% else %}
+                       
+                     {% endif %}
+                   </div>
+                  
+                   <div class="flex items-center" >
+                     <button name="minus" type="button" class="bg-black p-2"> 
+                       {% render 'icon-minus',class:"w-3 h-3" %}
+                     </button>
+                     <div class="border-2 px-2 border-black flex items-center">
+                       {{item.quantity}}
+                     </div>
+                     <button name="minus" type="button" class="bg-black p-2"> 
+                       {% render 'icon-plus',class:"w-3 h-3" %}
+                     </button>
+                   </div>
+   
+                 </div>
+              </div>
+            {% endfor %}
+          </div>
+         
+          <div>
+            <div class="flex justify-between align-center">
+              {% for discount_application in cart.discount_applications %}   
+               <h3 class="font-semibold">{{ discount_application.title }}</h3>
+               <h3 class="font-semibold">(-{{ discount_application.total_allocated_amount | money_with_currency }})</h3>
+              {% endfor %}
+             </div>
+             <div class="flex justify-between align-center mt-2">
+               <h3 class="font-semibold">Total Savings</h3>
+               <h3 class="font-semibold">{{total_savings| money_with_currency}}</h3>
+              </div>
+             <div class="flex justify-between align-center mt-2">
+               <h3 class="font-semibold">Subtotal</h3>
+               <h3 class="font-semibold">{{cart.items_subtotal_price |money_with_currency}}</h3>
+              </div>
+          </div>
+        </div>
+
+        <input type="submit" name="checkout" value="Checkout" class="bg-black text-white p-2 mt-3 cursor-pointer">
+</form> 

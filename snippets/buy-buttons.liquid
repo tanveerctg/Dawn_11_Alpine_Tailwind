@@ -72,9 +72,10 @@
                   console.log('error',{res})
                   return
                 } {% endcomment %}
+                this.loading=false;                     
                 $dispatch('toggle-cart')
-            
-                this.loading=false;
+                $dispatch('update-cart')
+                }).then(()=>{
                })
                .catch((error) => {
                  console.error('Error:', error);
